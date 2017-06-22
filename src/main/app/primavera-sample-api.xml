@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+    <flow name="primavera-sample-apiFlow">
+        <http:listener config-ref="Sample_Listener_Configuration" path="/accessprimavera" doc:name="HTTP"/>
+        <logger message="Message Input: #[message.id], Payload: #[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Input"/>
+        <message-property-filter pattern="#[message.inboundProperties['http.request']!='favicon.ico']" caseSensitive="true" doc:name="Not Favicon"/>
+        <json:validate-schema schemaLocation="resource://schema_validation.json" doc:name="Validate JSON Schema"/>
+        <json:json-to-object-transformer returnClass="java.util.Map" doc:name="JSON to Object"/>
+        <set-variable variableName="originalPayload" value="#[payload]" doc:name="originalPayload"/>
+        <http:request config-ref="Sample_Request_Configuration" path="/" method="GET" doc:name="GET /process - PrimaveraIntegration"/>
+        <validation:is-true message="Unsuccessful request" exceptionClass="org.mule.extension.validation.api.ValidationException" expression="#[message.inboundProperties['http.status']==200]" doc:name="Validate HTTP Status"/>
+        <logger level="INFO" doc:name="Output"/>
+        <exception-strategy ref="global-exception-handlerChoice_Exception_Strategy" doc:name="Reference Exception Strategy"/>
+    </flow>
+</mule>
