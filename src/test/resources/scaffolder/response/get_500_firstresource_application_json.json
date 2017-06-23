@@ -1,0 +1,8 @@
+500: 
+    description: Not able to reach this resource 
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "Server"
+          }

@@ -1,0 +1,18 @@
+200: 
+  description: Response accepted
+  body: 
+    application/json: 
+      example: | 
+        {
+          "code": "OK", 
+          "info": [
+            "element": {
+              "node": 157803
+            },
+            "metadata": {
+              "owner": "Martin J. King",
+              "company": "Barclays", 
+              "project": "Insurance"
+            }
+          ]
+        }

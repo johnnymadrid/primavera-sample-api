@@ -1,0 +1,8 @@
+409: 
+    description: Failed resource by field 
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "Unable"
+          }

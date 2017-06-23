@@ -1,5 +1,5 @@
 #%RAML 0.8
-title: Sample API
+title: Client Oracle Primavera API
 baseUri: http://localhost:8998/clientprimavera-{version}
 version: v1.0
 mediaType: application/json
@@ -20,6 +20,22 @@ documentation:
   description: This is the first resource of this client API. 
   is: [secured]
   get:
+    queryParameters: 
+      field: 
+        displayName: Field to filtering data 
+        description: Search Field 
+        required: false
+        type: string
+        minLength: 2 
+        example: date-created
+      page: 
+        displayName: Paging
+        description: Number of records to retrieve data
+        required: false 
+        type: integer
+        minimum: 0 
+        maximum: 10 
+        example: 5
     responses: 
       200: 
         description: Response accepted
@@ -61,5 +77,6 @@ documentation:
         body: 
           application/json: 
             example: !include ./responses/500.example
+   
     
       

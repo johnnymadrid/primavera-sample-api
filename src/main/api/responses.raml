@@ -1,0 +1,74 @@
+  200: 
+    description: Response accepted
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "OK", 
+            "info": [
+              "element": {
+                "node": 157803
+              },
+              "metadata": {
+                "owner": "Martin J. King",
+                "company": "Barclays", 
+                "project": "Insurance"
+              }
+            ]
+          }
+  201: 
+    description: Accepted resource 
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "Not"
+          }
+  204: 
+    description: Accepted Resource 
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "Reachable"
+          }
+  400: 
+    description: Failed resource 
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "KO"
+          }
+  401: 
+    description: Failed resource by headers
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "KO"
+          }
+  404: 
+    description: Not Found Resource 
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "Fatal"
+          }
+  409: 
+    description: Failed resource by field 
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "Unable"
+          }
+  500: 
+    description: Not able to reach this resource 
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "Server"
+          }
