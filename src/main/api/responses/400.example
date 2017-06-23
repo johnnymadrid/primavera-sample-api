@@ -1,0 +1,8 @@
+  400: 
+    description: Failed resource 
+    body: 
+      application/json: 
+        example: | 
+          {
+            "code": "KO"
+          }

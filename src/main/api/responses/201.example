@@ -1,0 +1,8 @@
+201: 
+  description: Accepted resource 
+  body: 
+    application/json: 
+      example: | 
+        {
+          "code": "Not"
+        }

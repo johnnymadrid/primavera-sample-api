@@ -1,0 +1,65 @@
+#%RAML 0.8
+title: Sample API
+baseUri: http://localhost:8998/clientprimavera-{version}
+version: v1.0
+mediaType: application/json
+
+protocols: [ HTTP, HTTPS ]
+
+traits: !include ./traits.raml   
+
+documentation: 
+  - title: Getting Started 
+    content: Welcome to this Client Primavera API
+  - title: Authentication 
+    content: How to authenticate in this API
+    
+    
+/firstresource: 
+  displayName: First Resource
+  description: This is the first resource of this client API. 
+  is: [secured]
+  get:
+    responses: 
+      200: 
+        description: Response accepted
+        body: 
+          application/json: 
+            example: !include ./responses/200.example
+      201: 
+        description: Accepted resource 
+        body: 
+          application/json: 
+            example: !include ./responses/201.example
+      204: 
+        description: Accepted Resource 
+        body: 
+          application/json: 
+            example: !include ./responses/204.example
+      400: 
+        description: Failed resource 
+        body: 
+          application/json: 
+            example: !include ./responses/400.example
+      401: 
+        description: Failed resource by headers
+        body: 
+          application/json: 
+            example: !include ./responses/401.example
+      404: 
+        description: Not Found Resource 
+        body: 
+          application/json: 
+            example: !include ./responses/404.example
+      409: 
+        description: Failed resource by field 
+        body: 
+          application/json: 
+            example: !include ./responses/409.example
+      500: 
+        description: Not able to reach this resource 
+        body: 
+          application/json: 
+            example: !include ./responses/500.example
+    
+      
