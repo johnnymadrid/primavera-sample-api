@@ -4,13 +4,13 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
     <flow name="api-main">
-        <http:listener config-ref="Sample_Listener_Configuration" path="/clientprimavera-v1/*" doc:name="IN"/>
+        <http:listener config-ref="Sample_Listener_Configuration" path="/*" doc:name="IN"/>
         <message-property-filter pattern="#[message.inboundProperties['http.request']!='favicon.ico']" caseSensitive="true" doc:name="Favicon"/>
         <apikit:router config-ref="Primavera-api-config" doc:name="APIkit Router"/>
         <exception-strategy ref="global-exception-handlerChoice_Exception_Strategy" doc:name="Reference Exception Strategy"/>
     </flow>
     <flow name="api-console">
-        <http:listener config-ref="Sample_Listener_Configuration" path="/clientprimavera-v1/console/*" doc:name="HTTP IN"/>
+        <http:listener config-ref="Sample_Listener_Configuration" path="/console/*" doc:name="HTTP IN"/>
         <message-property-filter pattern="#[message.inboundProperties['http.request']!='favicon.ico']" caseSensitive="true" doc:name="Not Favicon"/>
         <apikit:console config-ref="Primavera-api-config" doc:name="APIkit Console"/>
         <exception-strategy ref="global-exception-handlerChoice_Exception_Strategy" doc:name="Reference Exception Strategy"/>

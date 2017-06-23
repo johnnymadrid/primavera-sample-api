@@ -11,6 +11,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
     <apikit:config name="Primavera-api-config" raml="api.raml" consoleEnabled="false" doc:name="Router"/>
     <context:property-placeholder location="${mule.env}.properties"/>
-    <http:listener-config name="Sample_Listener_Configuration" host="${host}" port="${port}" doc:name="HTTP Listener Configuration"/>
+    <http:listener-config name="Sample_Listener_Configuration" host="${host}" port="${port}" doc:name="HTTP Listener Configuration" basePath="clientprimavera"/>
     <http:request-config name="Sample_Request_Configuration" host="${http.integration}" port="${port.integration}" basePath="${basePath.integration}" doc:name="HTTP Request Configuration"/>
 </mule>
