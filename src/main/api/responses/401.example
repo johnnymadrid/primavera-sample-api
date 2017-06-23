@@ -1,9 +1,4 @@
- 401: 
-    description: Failed resource by headers
-    body: 
-      application/json: 
-        example: | 
-          {
-            "code": "KO"
-          }
+{
+  "code": "KO"
+}
  

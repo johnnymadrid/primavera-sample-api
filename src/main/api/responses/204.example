@@ -1,8 +1,3 @@
-  204: 
-    description: Accepted Resource 
-    body: 
-      application/json: 
-        example: | 
-          {
-            "code": "Reachable"
-          }
+  {
+    "code": "Reachable"
+  }

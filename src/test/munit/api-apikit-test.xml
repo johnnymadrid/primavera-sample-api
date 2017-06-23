@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:mock="http://www.mulesoft.org/schema/mule/mock" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/mock/current/mule-mock.xsd ">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:mock="http://www.mulesoft.org/schema/mule/mock" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/mock/current/mule-mock.xsd">
     <spring:beans>
         <spring:import resource="classpath:api.xml" />
+        <spring:import resource="classpath:config.xml" />
+        <spring:import resource="classpath:errors.xml" />
+        <spring:import resource="classpath:resources.xml" />
     </spring:beans>
-    <munit:config mock-connectors="false" mock-inbounds="false" />
-    <http:request-config name="HTTP_Request_Configuration" host="localhost" port="8081" basePath="/api" />
+    <munit:config mock-connectors="false" mock-inbounds="false" doc:name="MUnit configuration"/>
+    <http:request-config name="ClientPrimavera_Request_Configuration" host="${host}" port="${port}" basePath="/clientprimavera" doc:name="HTTP Request Configuration"/>
     <munit:test name="get:/firstresource:api-config-200-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-200-application/json]">
-        <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
+        <mock:when doc:name="GET:/primaveraintegration/process" messageProcessor=".*:.*">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['GET /process - PrimaveraIntegration']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[getResource('scaffolder/response/get_200_firstresource_application_json.json').asString()]">
+                <mock:inbound-properties>
+                    <mock:inbound-property key="http.status" value="200"/>
+                </mock:inbound-properties>
+            </mock:then-return>
+        </mock:when>
+        <http:request config-ref="ClientPrimavera_Request_Configuration" method="GET" path="/firstresource" doc:name="GET:/clientprimavera">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
                 <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
@@ -16,8 +33,8 @@
         <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(200))]" doc:name="assert that - http.status eq 200" />
         <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_200_firstresource_application_json.json').asString()]" actualValue="#[payload]" doc:name="assert that - payload is as expected" />
     </munit:test>
-    <munit:test name="get:/firstresource:api-config-201-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-201-application/json]">
-        <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
+    <munit:test name="get:/firstresource:api-config-201-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-201-application/json]" ignore="true">
+        <http:request config-ref="ClientPrimavera_Request_Configuration" method="GET" path="/firstresource" doc:name="HTTP">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
                 <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
@@ -27,8 +44,8 @@
         <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(201))]" doc:name="assert that - http.status eq 201" />
         <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_201_firstresource_application_json.json').asString()]" actualValue="#[payload]" doc:name="assert that - payload is as expected" />
     </munit:test>
-    <munit:test name="get:/firstresource:api-config-204-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-204-application/json]">
-        <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
+    <munit:test name="get:/firstresource:api-config-204-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-204-application/json]" ignore="true">
+        <http:request config-ref="ClientPrimavera_Request_Configuration" method="GET" path="/firstresource" doc:name="HTTP">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
                 <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
@@ -38,8 +55,8 @@
         <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(204))]" doc:name="assert that - http.status eq 204" />
         <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_204_firstresource_application_json.json').asString()]" actualValue="#[payload]" doc:name="assert that - payload is as expected" />
     </munit:test>
-    <munit:test name="get:/firstresource:api-config-400-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-400-application/json]">
-        <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
+    <munit:test name="get:/firstresource:api-config-400-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-400-application/json]" ignore="true">
+        <http:request config-ref="ClientPrimavera_Request_Configuration" method="GET" path="/firstresource" doc:name="HTTP">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
                 <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
@@ -50,8 +67,8 @@
         <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(400))]" doc:name="assert that - http.status eq 400" />
         <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_400_firstresource_application_json.json').asString()]" actualValue="#[payload]" doc:name="assert that - payload is as expected" />
     </munit:test>
-    <munit:test name="get:/firstresource:api-config-401-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-401-application/json]">
-        <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
+    <munit:test name="get:/firstresource:api-config-401-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-401-application/json]" ignore="true">
+        <http:request config-ref="ClientPrimavera_Request_Configuration" method="GET" path="/firstresource" doc:name="HTTP">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
                 <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
@@ -62,8 +79,8 @@
         <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(401))]" doc:name="assert that - http.status eq 401" />
         <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_401_firstresource_application_json.json').asString()]" actualValue="#[payload]" doc:name="assert that - payload is as expected" />
     </munit:test>
-    <munit:test name="get:/firstresource:api-config-404-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-404-application/json]">
-        <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
+    <munit:test name="get:/firstresource:api-config-404-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-404-application/json]" ignore="true">
+        <http:request config-ref="ClientPrimavera_Request_Configuration" method="GET" path="/firstresource" doc:name="HTTP">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
                 <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
@@ -74,8 +91,8 @@
         <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(404))]" doc:name="assert that - http.status eq 404" />
         <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_404_firstresource_application_json.json').asString()]" actualValue="#[payload]" doc:name="assert that - payload is as expected" />
     </munit:test>
-    <munit:test name="get:/firstresource:api-config-409-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-409-application/json]">
-        <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
+    <munit:test name="get:/firstresource:api-config-409-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-409-application/json]" ignore="true">
+        <http:request config-ref="ClientPrimavera_Request_Configuration" method="GET" path="/firstresource" doc:name="HTTP">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
                 <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
@@ -86,8 +103,8 @@
         <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(409))]" doc:name="assert that - http.status eq 409" />
         <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_409_firstresource_application_json.json').asString()]" actualValue="#[payload]" doc:name="assert that - payload is as expected" />
     </munit:test>
-    <munit:test name="get:/firstresource:api-config-500-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-500-application/json]">
-        <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
+    <munit:test name="get:/firstresource:api-config-500-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-500-application/json]" ignore="true">
+        <http:request config-ref="ClientPrimavera_Request_Configuration" method="GET" path="/firstresource" doc:name="HTTP">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
                 <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
