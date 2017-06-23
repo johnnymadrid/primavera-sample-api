@@ -9,7 +9,7 @@
         <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
-                <http:header headerName="Authorization" value="e01653af-be22-47e1-b582-54d7c0c37d36" />
+                <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
             </http:request-builder>
         </http:request>
         <object-to-string-transformer doc:name="http response to string" />
@@ -20,7 +20,7 @@
         <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
-                <http:header headerName="Authorization" value="e01653af-be22-47e1-b582-54d7c0c37d36" />
+                <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
             </http:request-builder>
         </http:request>
         <object-to-string-transformer doc:name="http response to string" />
@@ -31,7 +31,7 @@
         <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
-                <http:header headerName="Authorization" value="e01653af-be22-47e1-b582-54d7c0c37d36" />
+                <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
             </http:request-builder>
         </http:request>
         <object-to-string-transformer doc:name="http response to string" />
@@ -42,7 +42,7 @@
         <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
-                <http:header headerName="Authorization" value="e01653af-be22-47e1-b582-54d7c0c37d36" />
+                <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
             </http:request-builder>
             <http:success-status-code-validator values="400" />
         </http:request>
@@ -54,7 +54,7 @@
         <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
-                <http:header headerName="Authorization" value="e01653af-be22-47e1-b582-54d7c0c37d36" />
+                <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
             </http:request-builder>
             <http:success-status-code-validator values="401" />
         </http:request>
@@ -66,7 +66,7 @@
         <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
-                <http:header headerName="Authorization" value="e01653af-be22-47e1-b582-54d7c0c37d36" />
+                <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
             </http:request-builder>
             <http:success-status-code-validator values="404" />
         </http:request>
@@ -78,7 +78,7 @@
         <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
-                <http:header headerName="Authorization" value="e01653af-be22-47e1-b582-54d7c0c37d36" />
+                <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
             </http:request-builder>
             <http:success-status-code-validator values="409" />
         </http:request>
@@ -90,7 +90,7 @@
         <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/firstresource">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
-                <http:header headerName="Authorization" value="e01653af-be22-47e1-b582-54d7c0c37d36" />
+                <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
             </http:request-builder>
             <http:success-status-code-validator values="500" />
         </http:request>

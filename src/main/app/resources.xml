@@ -12,32 +12,13 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
     <sub-flow name="get-firstresource">
         <logger message="Message Input: #[message.id], Payload: #[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Input"/>
-        <json:json-to-object-transformer returnClass="java.util.Map" doc:name="JSON to Object"/>
-        <set-variable variableName="originalPayload" value="#[payload]" doc:name="originalPayload"/>
-        <dw:transform-message doc:name="QueryParameters">
-            <dw:set-payload><![CDATA[%dw 1.0
-%output application/java
----
-queryParams: (message.inboundProperties['http.query.params']) default null
-	]]></dw:set-payload>
-        </dw:transform-message>
-        <choice doc:name="Is queryParams null?">
-            <when expression="#[queryParams!=null]">
-                <http:request config-ref="Sample_Request_Configuration" path="/" method="GET" doc:name="GET /process - PrimaveraIntegration"/>
-            </when>
-            <otherwise>
-                <flow-ref name="getQueryParameters" doc:name="getQueryParameters"/>
-            </otherwise>
-        </choice>
+        <message-properties-transformer doc:name="Message Properties">
+            <add-message-property key="http.query.params" value="#[message.inboundProperties['http.query.params']]"/>
+        </message-properties-transformer>
+        <http:request config-ref="Process_Request_Configuration" path="/" method="GET" doc:name="GET /process - PrimaveraIntegration"/>
 
         <validation:is-true message="Unsuccessful request" exceptionClass="org.mule.extension.validation.api.ValidationException" expression="#[message.inboundProperties['http.status']==200]" doc:name="Validate HTTP Status"/>
         <logger level="INFO" doc:name="Output"/>
     </sub-flow>
-    <sub-flow name="getQueryParameters">
-        <message-properties-transformer doc:name="QueryParams">
-            <add-message-property key="outboundProperties" value="#[message.outboundProperties.'http.query.params']"/>
-        </message-properties-transformer>
-        <http:request config-ref="Sample_Request_Configuration" path="/" method="GET" doc:name="GET /process - PrimaveraIntegration"/>
 
-    </sub-flow>
 </mule>
