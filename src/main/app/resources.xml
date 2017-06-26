@@ -18,7 +18,7 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
         </message-properties-transformer>
         <http:request config-ref="Process_Request_Configuration" path="/" method="GET" doc:name="GET /process - PrimaveraIntegration"/>
 
-        <validation:is-true message="Unsuccessful request" exceptionClass="org.mule.extension.validation.api.ValidationException" expression="#[message.inboundProperties['http.status']&gt;=200]" doc:name="Validate HTTP Status"/>
+        <validation:is-true message="Unsuccessful request" exceptionClass="org.mule.extension.validation.api.ValidationException" expression="#[message.inboundProperties['http.status']==200]" doc:name="Validate HTTP Status"/>
         <logger level="INFO" doc:name="Output"/>
     </sub-flow>
 

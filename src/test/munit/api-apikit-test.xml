@@ -10,12 +10,14 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
         <spring:import resource="classpath:errors.xml" />
         <spring:import resource="classpath:resources.xml" />
     </spring:beans>
+    
+    
     <munit:config mock-connectors="false" mock-inbounds="false" doc:name="MUnit configuration"/>
     <http:request-config name="Primavera_Request_Configuration" host="${host}" port="${port}" basePath="clientprimavera" doc:name="HTTP Request Configuration"/>
     <munit:before-test name="Before_Test" description="Before tests actions">
         <set-variable variableName="randomVariable" value="#[[]]" doc:name="Variable"/>
     </munit:before-test>
-    <munit:test name="get:/firstresource:api-config-200-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-200-application/json]" ignore="true">
+    <munit:test name="get:/firstresource:api-config-200-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-200-application/json]" >
         <mock:when messageProcessor=".*:.*" doc:name="GET:/primaveraintegration/process">
             <mock:with-attributes>
                 <mock:with-attribute name="doc:name" whereValue="#['GET /process - PrimaveraIntegration']"/>
@@ -38,7 +40,7 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
         <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_200_firstresource_application_json.json').asString()]" actualValue="#[payload]" doc:name="assert that - payload is as expected" />
     </munit:test>
 
-    <munit:test name="get:/firstresource:api-config-400-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-400-application/json]" ignore="true">
+    <munit:test name="get:/firstresource:api-config-400-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-400-application/json]" >
         <http:request config-ref="Primavera_Request_Configuration" method="GET" path="/something" doc:name="GET:/clientprimavera">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json"/>
@@ -51,7 +53,7 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
         <munit:assert-not-null message="#There is not message payload for this test" doc:name="Assert Not Null Payload"/>
 
     </munit:test>
-    <munit:test name="get:/firstresource:api-config-401-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-401-application/json]" ignore="true">
+    <munit:test name="get:/firstresource:api-config-401-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-401-application/json]" >
         <http:request config-ref="Primavera_Request_Configuration" method="GET" path="/firstresource" doc:name="GET :/clientprimavera">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json"/>
@@ -78,8 +80,19 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
 
     </munit:test>
 
-    <munit:test name="get:/firstresource:api-config-500-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-500-application/json]" ignore="true">
-        <http:request config-ref="Primavera_Request_Configuration" method="GET" path="/firstresource" doc:name="HTTP">
+    <munit:test name="get:/firstresource:api-config-500-application/json-FlowTest" description="Verifying functionality of [get:/firstresource:api-config-500-application/json]" >
+        <mock:when messageProcessor=".*:.*" doc:name="Call /primaveraintegration">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['GET /process - PrimaveraIntegration']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[getResource('scaffolder/response/get_500_firstresource_application_json.json').asString()]">
+                <mock:inbound-properties>
+                    <mock:inbound-property key="http.status" value="500"/>
+                </mock:inbound-properties>
+            </mock:then-return>
+        </mock:when>
+
+        <http:request config-ref="Primavera_Request_Configuration" method="GET" path="/firstresource" doc:name="GET :/clientprimavera">
             <http:request-builder>
                 <http:header headerName="Accept" value="application/json" />
                 <http:header headerName="Authorization" value="64adaed0-23a0-4124-8e7d-06aba5a7e0fc" />
@@ -88,6 +101,6 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
         </http:request>
         <object-to-string-transformer doc:name="http response to string" />
         <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(500))]" doc:name="assert that - http.status eq 500" />
-        <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_500_firstresource_application_json.json').asString()]" actualValue="#[payload]" doc:name="assert that - payload is as expected" />
+
     </munit:test>
 </mule>
